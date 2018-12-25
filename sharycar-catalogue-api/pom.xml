@@ -11,5 +11,30 @@
 
     <artifactId>sharycar-catalogue-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>sharycar</groupId>
+            <artifactId>sharycar-catalogue-persistence</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.kumuluz.ee</groupId>
+                <artifactId>kumuluzee-maven-plugin</artifactId>
+                <version>${kumuluz.version}</version>
+                <executions>
+                    <execution>
+                        <id>package</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

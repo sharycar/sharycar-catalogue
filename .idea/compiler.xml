@@ -6,7 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="sharycar-catalogue" />
+        <module name="sharycar-catalogue-api" />
+        <module name="sharycar-catalogue-persistence" />
       </profile>
     </annotationProcessing>
   </component>

@@ -1,7 +1,11 @@
 package sharycar.catalogue.persistence;
 
 import javax.persistence.*;
+import java.util.List;
 
+@Entity
+@Table(name = "cars")
+@NamedQuery(name = "Car.findAll", query = "SELECT c FROM Car c")
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +18,19 @@ public class Car {
     private String kilometers;
 
     private String color;
+
+    @OneToMany(mappedBy="car")
+    private List<Reservation> reservationList;
+
+    public List<Reservation> getReservationList() {
+        return reservationList;
+    }
+
+    public void setReservationList(List<Reservation> reservationList) {
+        this.reservationList = reservationList;
+    }
+
+
 
     public Integer getId() {
         return id;

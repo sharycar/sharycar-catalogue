@@ -1,15 +1,19 @@
 package sharycar.catalogue.persistence;
 import javax.persistence.*;
 
-
+@Entity
+@Table(name = "reservations")
+@NamedQuery(name = "Reservation.findAll", query = "SELECT r FROM Reservation r")
 public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private String carId;
+    @ManyToOne
+    @JoinColumn(name="car_id")
+    private Car car;
+
 
     @Column(nullable = false)
     private String userName;
@@ -27,13 +31,6 @@ public class Reservation {
         this.id = id;
     }
 
-    public String getCarId() {
-        return carId;
-    }
-
-    public void setCarId(String carId) {
-        this.carId = carId;
-    }
 
     public String getUserName() {
         return userName;
@@ -41,6 +38,14 @@ public class Reservation {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     public String getFromDateTime() {
