@@ -91,6 +91,10 @@ public class CatalogueResource {
             query.setParameter("resId", resId);
             return Response.ok(query.getResultList()).build();
 
+            //@TODO call payment service and take some money from the card.
+            // @TODO implement service discovery
+
+
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
