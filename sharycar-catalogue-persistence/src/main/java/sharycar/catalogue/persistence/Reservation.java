@@ -1,6 +1,6 @@
 package sharycar.catalogue.persistence;
 import javax.persistence.*;
-
+import java.util.Date;
 @Entity
 @Table(name = "reservations")
 @NamedQuery(name = "Reservation.findAll", query = "SELECT r FROM Reservation r")
@@ -19,9 +19,22 @@ public class Reservation {
     private String userName;
 
     @Column(nullable = false)
-    private String fromDateTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fromDateTime;
 
-    private String toDateTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date toDateTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date reservationTime;
+
+    public Date getReservationTime() {
+        return reservationTime;
+    }
+
+    public void setReservationTime(Date reservationTime) {
+        this.reservationTime = reservationTime;
+    }
 
     public Integer getId() {
         return id;
@@ -41,6 +54,10 @@ public class Reservation {
     }
 
     public Car getCar() {
+        // Do not show reservations here
+        if (car != null) {
+            car.setReservationList(null);
+        }
         return car;
     }
 
@@ -48,19 +65,19 @@ public class Reservation {
         this.car = car;
     }
 
-    public String getFromDateTime() {
+    public Date getFromDateTime() {
         return fromDateTime;
     }
 
-    public void setFromDateTime(String fromDateTime) {
+    public void setFromDateTime(Date fromDateTime) {
         this.fromDateTime = fromDateTime;
     }
 
-    public String getToDateTime() {
+    public Date getToDateTime() {
         return toDateTime;
     }
 
-    public void setToDateTime(String toDateTime) {
+    public void setToDateTime(Date toDateTime) {
         this.toDateTime = toDateTime;
     }
 }
