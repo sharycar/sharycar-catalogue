@@ -1,8 +1,6 @@
 package sharycar.catalogue.api;
 
 
-import java.security.MessageDigest;
-
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
