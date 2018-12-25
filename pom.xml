@@ -12,7 +12,15 @@
         <module>sharycar-catalogue-api</module>
         <module>sharycar-catalogue-persistence</module>
     </modules>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <kumuluz.version>3.0.0</kumuluz.version>
+        <kumuluzee-config.version>1.0.0</kumuluzee-config.version>
+        <kumuluzee-discovery.version>1.1.0</kumuluzee-discovery.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -25,6 +33,18 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-jpa-eclipselink</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-microProfile-1.2</artifactId>
+        </dependency>
+    </dependencies>
+
 
 
 </project>
