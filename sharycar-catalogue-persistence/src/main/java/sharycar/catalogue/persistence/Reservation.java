@@ -16,7 +16,7 @@ public class Reservation {
 
 
     @Column(nullable = false)
-    private String userName;
+    private Integer user_id;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -44,13 +44,12 @@ public class Reservation {
         this.id = id;
     }
 
-
-    public String getUserName() {
-        return userName;
+    public Integer getUser_id() {
+        return user_id;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
     }
 
     public Car getCar() {

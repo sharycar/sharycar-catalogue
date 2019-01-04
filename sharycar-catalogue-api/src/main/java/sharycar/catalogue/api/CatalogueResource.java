@@ -25,7 +25,7 @@ public class CatalogueResource {
 
 
     /**
-     *  Get all cars
+     *  Get all cars with reservations
      */
     @GET
     @Path("/cars")
@@ -89,10 +89,6 @@ public class CatalogueResource {
             query.setParameter("resId", resId);
             return Response.ok(query.getResultList()).build();
 
-            //@TODO call payment service and take some money from the card.
-            // @TODO implement service discovery
-
-
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -101,20 +97,20 @@ public class CatalogueResource {
 
     /**
      * Get reservations for users
-     * @param uname
+     * @param uid
      * @return
      */
     @GET
-    @Path("/reservations/user/{uname}")
-    public Response getReservationDetails(@PathParam("uname") String uname) {
+    @Path("/reservations/user/{uid}")
+    public Response getReservationsForUser(@PathParam("uid") Integer uid) {
 
         try {
-            Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.userName = :uname");
-            query.setParameter("uname", uname);
+            Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.user_id = :uid");
+            query.setParameter("uid", uid);
             return Response.ok(query.getResultList()).build();
 
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
 
     }
@@ -135,7 +131,8 @@ public class CatalogueResource {
     @POST
     @Path("/reservations")
     public Response createReservation(Reservation reservation) {
-
+        //@TODO call payment service and take some money from the card.
+        // @TODO implement service discovery
         reservation.setId(null);
         reservation.setReservationTime(new Date());
 
@@ -152,7 +149,7 @@ public class CatalogueResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        if (reservation.getUserName() == null || reservation.getUserName().isEmpty()
+        if (reservation.getUser_id() == null
                 || reservation.getFromDateTime() == null ) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         } else {
