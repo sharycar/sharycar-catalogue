@@ -11,6 +11,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
+
+import com.kumuluz.ee.logs.cdi.Log;
+import com.kumuluz.ee.logs.cdi.LogParams;
 import sharycar.catalogue.persistence.Car;
 import sharycar.catalogue.persistence.Reservation;
 
@@ -18,6 +21,8 @@ import sharycar.catalogue.persistence.Reservation;
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Log(LogParams.METRICS)
+
 public class CatalogueResource {
 
     @PersistenceContext
@@ -28,6 +33,7 @@ public class CatalogueResource {
      *  Get all cars with reservations
      */
     @GET
+    @Log(value = LogParams.METRICS, methodCall = false)
     @Path("/cars")
     public Response getCars() {
 
