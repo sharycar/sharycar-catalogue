@@ -16,7 +16,15 @@ kumuluzee:
     checks:
       data-source-health-check:
         jndi-name: jdbc/SharyCarDB
-
+  discovery:
+    etcd:
+      hosts: http://etcd:2379
+  config:
+    start-retry-delay-ms: 500
+    max-retry-delay-ms: 900000
+    etcd:
+      hosts: http://etcd:2379
+      
 rest-config:
   payment-currency: EUR
   reservation-value: 5
