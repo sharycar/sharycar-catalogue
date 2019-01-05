@@ -16,10 +16,15 @@ import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
+
 import java.util.Map;
 
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import jdk.nashorn.internal.runtime.JSONFunctions;
+
+import com.kumuluz.ee.logs.cdi.Log;
+import com.kumuluz.ee.logs.cdi.LogParams;
+
 import sharycar.catalogue.persistence.Car;
 import sharycar.catalogue.persistence.Payment;
 import sharycar.catalogue.persistence.Reservation;
@@ -28,6 +33,8 @@ import sharycar.catalogue.persistence.Reservation;
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Log(LogParams.METRICS)
+
 public class CatalogueResource {
 
     @PersistenceContext
@@ -38,6 +45,7 @@ public class CatalogueResource {
      *  Get all cars with reservations
      */
     @GET
+    @Log(value = LogParams.METRICS, methodCall = false)
     @Path("/cars")
     public Response getCars() {
 
