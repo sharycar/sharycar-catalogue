@@ -5,7 +5,7 @@ kumuluzee:
   version: 1.0.0
   server:
     http:
-      port: 8080
+      port: 8082
   datasources:
   - jndi-name: jdbc/SharyCarDB
     connection-url: jdbc:postgresql://sharycardb.czqdzv4vbdko.eu-west-1.rds.amazonaws.com:5432/postgres
@@ -16,3 +16,7 @@ kumuluzee:
     checks:
       data-source-health-check:
         jndi-name: jdbc/SharyCarDB
+
+rest-config:
+  payment-currency: EUR
+  reservation-value: 5
