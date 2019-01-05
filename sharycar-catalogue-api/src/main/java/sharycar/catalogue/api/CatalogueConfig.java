@@ -11,6 +11,7 @@ import javax.enterprise.context.ApplicationScoped;
 public class CatalogueConfig {
 
     //@TODO watch values from etcd
+    @ConfigValue(watch = true)
     private String paymentCurrency;
     private Integer reservationValue;
 

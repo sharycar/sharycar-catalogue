@@ -24,7 +24,7 @@ kumuluzee:
     max-retry-delay-ms: 900000
     etcd:
       hosts: http://etcd:2379
-      
+
 rest-config:
   payment-currency: EUR
-  reservation-value: 5
+  reservation-value: 6
