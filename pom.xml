@@ -44,16 +44,6 @@
                 <artifactId>kumuluzee-microProfile-1.2</artifactId>
             </dependency>
             <dependency>
-                <groupId>com.kumuluz.ee.config</groupId>
-                <artifactId>kumuluzee-config-consul</artifactId>
-                <version>${kumuluzee-config.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kumuluz.ee.discovery</groupId>
-                <artifactId>kumuluzee-discovery-consul</artifactId>
-                <version>${kumuluzee-discovery.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.kumuluz.ee</groupId>
                 <artifactId>kumuluzee-microProfile-1.2</artifactId>
             </dependency>
