@@ -2,16 +2,26 @@ package sharycar.catalogue.api;
 
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
+import javax.ws.rs.client.*;
+import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import com.kumuluz.ee.discovery.annotations.DiscoverService;
+import jdk.nashorn.internal.runtime.JSONFunctions;
 import sharycar.catalogue.persistence.Car;
+import sharycar.catalogue.persistence.Payment;
 import sharycar.catalogue.persistence.Reservation;
 
 @Path("/catalogue")
@@ -163,11 +173,38 @@ public class CatalogueResource {
             }
         }
 
-        if (reservation.getId() != null) {
-            return Response.status(Response.Status.CREATED).entity(reservation).build();
-        } else {
-            return Response.status(Response.Status.CONFLICT).entity(reservation).build();
+        // Error if reservation was not inserted
+        if (reservation.getId() == null) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("ERROR").build();
         }
+
+        Client client = ClientBuilder.newClient();
+        WebTarget paymentService = client.target("http://localhost:8083");
+        // Execute reservation on credit card
+        paymentService = paymentService.path("payments/add");
+
+
+
+        Response response;
+
+        Payment p = new Payment();
+        p.setUser_id(reservation.getUser_id());
+        p.setPrice(3.0);
+        p.setCurrency("EUR");
+        p.setReservationId(reservation.getId());
+
+        try {
+            response = paymentService.request().post(Entity.json(p));
+        } catch (ProcessingException e) {
+            return Response.ok("Error service call message: "+"( "+paymentService.getUri()+")"+"ERRmsg"+ e.getMessage()+ e.getStackTrace()).build();
+        }
+
+//        ProxiedResponse proxiedResponse = new ProxiedResponse();
+//        proxiedResponse.setResponse(response.readEntity(String.class));
+//        proxiedResponse.setProxiedFrom(paymentService.getUri().toString());
+
+        return Response.ok(reservation).build();
+
     }
 
 }
