@@ -37,6 +37,22 @@ import sharycar.catalogue.persistence.Reservation;
 
 public class CatalogueResource {
 
+    @Inject
+    @DiscoverService(value = "payment-service", version = "1.0.x", environment = "dev")
+    private WebTarget target;
+
+
+    /**
+     * testing purpose
+     * @return
+     */
+    @GET
+    @Path("url")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getUrl() {
+        return Response.ok(target.getUri().toString()).build();
+    }
+
     @PersistenceContext
     private EntityManager em;
 
