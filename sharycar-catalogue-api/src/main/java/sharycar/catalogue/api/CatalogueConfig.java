@@ -10,7 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 @ConfigBundle("rest-config")
 public class CatalogueConfig {
 
-    //@TODO config via etcd
+    //@TODO watch values from etcd
     private String paymentCurrency;
     private Integer reservationValue;
 
