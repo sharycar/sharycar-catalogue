@@ -22,6 +22,10 @@ kumuluzee:
   config:
     etcd:
       hosts: http://etcd:2379
+  metrics:
+    servlet:
+      enabled: true
+      mapping: /metrics
 
 rest-config:
   payment-currency: EUR
