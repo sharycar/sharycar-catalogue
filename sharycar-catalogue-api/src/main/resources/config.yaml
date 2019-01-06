@@ -14,8 +14,8 @@ kumuluzee:
     max-pool-size: 20
   health:
     checks:
-      data-source-health-check:
-        jndi-name: jdbc/SharyCarDB
+#      data-source-health-check:
+#        jndi-name: jdbc/SharyCarDB
       http-health-check:
         connection-url: http://www.reddit.com
     servlet:
