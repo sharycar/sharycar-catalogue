@@ -10,9 +10,10 @@ import javax.enterprise.context.ApplicationScoped;
 @ConfigBundle("rest-config")
 public class CatalogueConfig {
 
-    //@TODO watch values from etcd
+
     @ConfigValue(watch = true)
     private String paymentCurrency;
+    @ConfigValue(watch = true)
     private Integer reservationValue;
 
     public String getPaymentCurrency() {

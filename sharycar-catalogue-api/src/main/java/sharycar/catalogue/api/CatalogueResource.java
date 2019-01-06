@@ -37,9 +37,9 @@ import sharycar.catalogue.persistence.Reservation;
 
 public class CatalogueResource {
 
-//    @Inject
-//    @DiscoverService(value = "payment-service", version = "1.0.x", environment = "dev")
-//    private WebTarget target;
+    @Inject
+    @DiscoverService(value = "payment-service", version = "1.0.x", environment = "dev")
+    private WebTarget target;
 
 
     @Inject
@@ -64,17 +64,17 @@ public class CatalogueResource {
         return Response.ok(response).build();
     }
 
-//
-//    /**
-//     * testing purpose
-//     * @return
-//     */
-//    @GET
-//    @Path("url")
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public Response getUrl() {
-//        return Response.ok(target.getUri().toString()).build();
-//    }
+
+    /**
+     * testing purpose
+     * @return
+     */
+    @GET
+    @Path("url")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getUrl() {
+        return Response.ok(target.getUri().toString()).build();
+    }
 
     @PersistenceContext
     private EntityManager em;
@@ -225,19 +225,19 @@ public class CatalogueResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("ERROR").build();
         }
 
-        Client client = ClientBuilder.newClient();
-        WebTarget paymentService = client.target("http://localhost:8083");
-        // Execute reservation on credit card
-        paymentService = paymentService.path("payments/add");
 
+        WebTarget paymentService;
+        // Execute reservation on credit card - use discovered microservice
+        paymentService = target.path("payments/add");
 
 
         Response response;
 
+        // Set payment from config
         Payment p = new Payment();
         p.setUser_id(reservation.getUser_id());
-        p.setPrice(3.0);
-        p.setCurrency("EUR");
+        p.setPrice(properties.getReservationValue().doubleValue());
+        p.setCurrency(properties.getPaymentCurrency());
         p.setReservationId(reservation.getId());
 
         try {
