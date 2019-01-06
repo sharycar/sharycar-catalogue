@@ -13,6 +13,7 @@ public class CatalogueConfig {
 
     @ConfigValue(watch = true)
     private String paymentCurrency;
+    @ConfigValue(watch = true)
     private Integer reservationValue;
 
     public String getPaymentCurrency() {
