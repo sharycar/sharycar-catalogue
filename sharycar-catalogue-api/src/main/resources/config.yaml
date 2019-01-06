@@ -16,6 +16,15 @@ kumuluzee:
     checks:
       data-source-health-check:
         jndi-name: jdbc/SharyCarDB
+      http-health-check:
+        connection-url: http://www.reddit.com
+    servlet:
+      mapping: /health
+      enabled: true
+    logs:
+      enabled: true
+      level: FINE
+      period-s: 60
   discovery:
     etcd:
       hosts: http://etcd:2379
