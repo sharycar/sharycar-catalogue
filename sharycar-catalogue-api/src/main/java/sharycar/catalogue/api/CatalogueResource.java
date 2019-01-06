@@ -33,18 +33,13 @@ import sharycar.catalogue.persistence.Reservation;
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Log
-
-// Three log queries
-// marker.name: ENTRY || marker.name: EXIT
-// marker.name: ENTRY && contextMap.method: getCars
-// marker.name: ENTRY && contextMap.method: getReservations
+@Log(LogParams.METRICS)
 
 public class CatalogueResource {
 
-    @Inject
-    @DiscoverService(value = "payment-service", version = "1.0.x", environment = "dev")
-    private WebTarget target;
+//    @Inject
+//    @DiscoverService(value = "payment-service", version = "1.0.x", environment = "dev")
+//    private WebTarget target;
 
 
     @Inject
@@ -78,7 +73,7 @@ public class CatalogueResource {
     @Path("url")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getUrl() {
-        return Response.ok(target.getUri().toString()).build();
+        return Response.ok("TEST: 104.197.143.157:8080 ").build();
     }
 
     @PersistenceContext
@@ -89,6 +84,7 @@ public class CatalogueResource {
      *  Get all cars with reservations
      */
     @GET
+    @Log(value = LogParams.METRICS, methodCall = false)
     @Path("/cars")
     public Response getCars() {
 
@@ -229,15 +225,15 @@ public class CatalogueResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("ERROR").build();
         }
 
+        Client client = ClientBuilder.newClient();
+        WebTarget paymentService = client.target("http://104.197.143.157:8080");
+        // Execute reservation on credit card
+        paymentService = paymentService.path("payments/add");
 
-        WebTarget paymentService;
-        // Execute reservation on credit card - use discovered microservice
-        paymentService = target.path("payments/add");
 
 
         Response response;
 
-        // Set payment from config
         Payment p = new Payment();
         p.setUser_id(reservation.getUser_id());
         p.setPrice(properties.getReservationValue().doubleValue());
