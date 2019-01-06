@@ -12,19 +12,19 @@ kumuluzee:
     username: postgres
     password: postgres
     max-pool-size: 20
-#  health:
-#    checks:
-##      data-source-health-check:
-##        jndi-name: jdbc/SharyCarDB
-#      http-health-check:
-#        connection-url: http://www.reddit.com
-#    servlet:
-#      mapping: /health
-#      enabled: true
-#    logs:
-#      enabled: true
-#      level: FINE
-#      period-s: 60
+  health:
+    servlet:
+      mapping: /health
+      enabled: true
+    logs:
+      enabled: true
+      level: FINE
+      period-s: 60
+    checks:
+      data-source-health-check:
+        jndi-name: jdbc/SharyCarDB
+      disk-space-health-check:
+        threshold: 100000000
   discovery:
     etcd:
       hosts: http://etcd:2379
