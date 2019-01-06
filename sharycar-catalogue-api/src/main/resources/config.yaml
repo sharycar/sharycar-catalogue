@@ -23,9 +23,12 @@ kumuluzee:
     etcd:
       hosts: http://etcd:2379
   metrics:
-    servlet:
-      enabled: true
-      mapping: /metrics
+    logstash:
+      enabled: false
+    web-instrumentation:
+    - name: metricsEndpoint
+      url-pattern: /metrics/*
+
 
 rest-config:
   payment-currency: EUR
