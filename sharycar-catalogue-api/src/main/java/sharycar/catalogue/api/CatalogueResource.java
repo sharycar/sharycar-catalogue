@@ -33,7 +33,12 @@ import sharycar.catalogue.persistence.Reservation;
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Log(LogParams.METRICS)
+@Log
+
+// Three log queries
+// marker.name: ENTRY || marker.name: EXIT
+// marker.name: ENTRY && contextMap.method: getCars
+// marker.name: ENTRY && contextMap.method: getReservations
 
 public class CatalogueResource {
 
@@ -84,7 +89,6 @@ public class CatalogueResource {
      *  Get all cars with reservations
      */
     @GET
-    @Log(value = LogParams.METRICS, methodCall = false)
     @Path("/cars")
     public Response getCars() {
 
