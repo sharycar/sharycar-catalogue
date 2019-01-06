@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,8 @@ import jdk.nashorn.internal.runtime.JSONFunctions;
 import com.kumuluz.ee.logs.cdi.Log;
 import com.kumuluz.ee.logs.cdi.LogParams;
 
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.metrics.annotation.Metered;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import sharycar.catalogue.persistence.Car;
@@ -102,6 +105,38 @@ public class CatalogueResource {
         return Response.ok(cars).build();
 
     }
+
+
+    /**
+     *  route optimizator
+     *   @param lat
+     *   @param lon
+     */
+    @GET
+    @Path("/optimize/{lat}/{lon}")
+    @Metered(name = "get_optimizations")
+    @Timeout(value = 2, unit = ChronoUnit.SECONDS)
+    @Fallback(fallbackMethod = "optimizeDefault")
+    public Response optimize(@PathParam("lat") Double lat, @PathParam("lon") Double lon) {
+
+        Client client = ClientBuilder.newClient();
+          WebTarget targetOpt = client.target("https://smart-cargo.p.rapidapi.com/smart-cargo/resolve");
+
+          Response r = targetOpt.request()
+                  .header("X-RapidAPI-Key", "cd3a1baf20mshc9ba5dfe4c4a555p1f1bc2jsn097485ca8edd")
+                  .header("Content-Type", "application/json")
+                  .post(Entity.json("{\"vehicleTypes\":[{\"id\":\"abcd\",\"capacityDimension\":[{\"index\":0,\"value\":30}],\"costPerDistance\":1,\"costPerTransportTime\":10,\"costPerServiceTime\":10,\"costPerWaitingTime\":10,\"fixedCost\":0,\"maxVelocity\":40}],\"vehicles\":[{\"id\":\"Pagano\",\"type\":\"abcd\",\"returnToDepot\":true,\"startLocation\":{\"lat\":45.471668,\"lng\":9.166214}}],\"services\":[{\"name\":\"Cimarosa\",\"serviceTime\":0.2,\"dimension\":[{\"index\":0,\"value\":1}],\"location\":{\"lat\":45.466472,\"lng\":9.159393}},{\"name\":\"Ponti\",\"serviceTime\":0.2,\"dimension\":[{\"index\":0,\"value\":1}],\"location\":{\"lat\":45.441196,\"lng\":9.15202}},{\"name\":\"Washington\",\"serviceTime\":0.2,\"dimension\":[{\"index\":0,\"value\":1}],\"location\":{\"lat\":45.465765,\"lng\":9.155347}},{\"name\":\"Cavour\",\"serviceTime\":0.2,\"dimension\":[{\"index\":0,\"value\":1}],\"location\":{\"lat\":45.47287,\"lng\":9.195434}},{\"name\":\"Brera\",\"serviceTime\":0.2,\"dimension\":[{\"index\":0,\"value\":1}],\"location\":{\"lat\":45.471021,\"lng\":9.187609}},{\"name\":\"Moscova\",\"serviceTime\":0.2,\"dimension\":[{\"index\":0,\"value\":1}],\"location\":{\"lat\":45.476848,\"lng\":9.189264}},{\"name\":\"Cusani\",\"serviceTime\":0.2,\"dimension\":[{\"index\":0,\"value\":1}],\"location\":{\"lat\":45.468748,\"lng\":9.184237}},{\"name\":\"Giovio\",\"serviceTime\":0.2,\"dimension\":[{\"index\":0,\"value\":1}],\"location\":{\"lat\":45.464064,\"lng\":9.161008}}],\"pickups\":[],\"deliveries\":[],\"shipments\":[]}"));
+
+        return Response.ok(JSONFunctions.quote(r.readEntity(String.class))).build();
+     //   return Response.ok(JSONFunctions.quote(lat.toString())).build();
+    }
+
+
+    public Response optimizeDefault() {
+        return Response.ok(JSONFunctions.quote("Currently not available, but we know you can do it!")).build();
+    }
+
+
 
     /**
      *  Get all reservations
