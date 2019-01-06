@@ -25,6 +25,8 @@ import jdk.nashorn.internal.runtime.JSONFunctions;
 import com.kumuluz.ee.logs.cdi.Log;
 import com.kumuluz.ee.logs.cdi.LogParams;
 
+import org.eclipse.microprofile.metrics.annotation.Metered;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import sharycar.catalogue.persistence.Car;
 import sharycar.catalogue.persistence.Payment;
 import sharycar.catalogue.persistence.Reservation;
@@ -33,7 +35,12 @@ import sharycar.catalogue.persistence.Reservation;
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Log(LogParams.METRICS)
+@Log
+// Three log queries
+// marker.name: ENTRY || marker.name: EXIT
+// marker.name: ENTRY && contextMap.method: getCars
+// marker.name: ENTRY && contextMap.method: getReservations
+
 
 public class CatalogueResource {
 
@@ -84,8 +91,8 @@ public class CatalogueResource {
      *  Get all cars with reservations
      */
     @GET
-    @Log(value = LogParams.METRICS, methodCall = false)
     @Path("/cars")
+    @Metered(name = "get_cars_requests")
     public Response getCars() {
 
         TypedQuery<Car> query = em.createNamedQuery("Car.findAll", Car.class);
@@ -101,6 +108,7 @@ public class CatalogueResource {
      */
     @GET
     @Path("/reservations")
+    @Metered(name = "get_reservations_requests")
     public Response getReservations() {
 
         TypedQuery<Reservation> query = em.createNamedQuery("Reservation.findAll", Reservation.class);
@@ -187,6 +195,7 @@ public class CatalogueResource {
 
     @POST
     @Path("/reservations")
+    @Timed(name = "create_reservation_time")
     public Response createReservation(Reservation reservation) {
         //@TODO call payment service and take some money from the card.
         // @TODO implement service discovery
